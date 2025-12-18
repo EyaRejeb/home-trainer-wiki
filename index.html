@@ -1,0 +1,870 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home Trainer - Wiki Complète | Documentation Système IoT</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --primary: #2ecc71;
+            --secondary: #3498db;
+            --danger: #e74c3c;
+            --warning: #f39c12;
+            --dark: #2c3e50;
+            --light: #ecf0f1;
+            --text: #34495e;
+        }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f8f9fa; color: var(--text); line-height: 1.6; }
+        header { background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%); color: white; padding: 1.5rem 0; box-shadow: 0 2px 10px rgba(0,0,0,0.1); position: sticky; top: 0; z-index: 100; }
+        .header-content { max-width: 1400px; margin: 0 auto; padding: 0 20px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; }
+        .logo { font-size: 1.8rem; font-weight: bold; color: white; }
+        .page-tabs { display: flex; gap: 1rem; }
+        .page-tab { padding: 0.5rem 1rem; background: rgba(255,255,255,0.2); color: white; border: none; border-radius: 5px; cursor: pointer; transition: all 0.3s; }
+        .page-tab:hover { background: rgba(255,255,255,0.3); }
+        .page-tab.active { background: white; color: var(--primary); }
+        .container { max-width: 1400px; margin: 0 auto; padding: 2rem 20px; }
+        .intro-section { background: white; padding: 2rem; border-radius: 10px; box-shadow: 0 2px 15px rgba(0,0,0,0.08); margin-bottom: 2rem; }
+        .intro-section h1 { color: var(--primary); margin-bottom: 1rem; font-size: 2.2rem; }
+        .intro-section p { font-size: 1rem; margin-bottom: 1rem; color: #555; }
+        .intro-image { width: 100%; height: 250px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 10px; display: flex; align-items: center; justify-content: center; color: white; font-size: 1.1rem; margin: 1.5rem 0; }
+        .main-content { display: grid; grid-template-columns: 250px 1fr; gap: 2rem; }
+        .sidebar { background: white; padding: 1.5rem; border-radius: 10px; height: fit-content; box-shadow: 0 2px 10px rgba(0,0,0,0.08); position: sticky; top: 100px; }
+        .sidebar h3 { color: var(--primary); margin-bottom: 1rem; font-size: 1.1rem; }
+        .sidebar ul { list-style: none; }
+        .sidebar li { margin-bottom: 0.3rem; }
+        .sidebar a { color: var(--text); text-decoration: none; padding: 0.4rem 0.5rem; border-left: 3px solid transparent; display: block; transition: all 0.3s; font-size: 0.9rem; }
+        .sidebar a:hover { background-color: var(--light); border-left-color: var(--primary); padding-left: 1rem; }
+        .page { display: none; }
+        .page.active { display: block; }
+        .content { background: white; padding: 2rem; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.08); }
+        section { margin-bottom: 3rem; scroll-margin-top: 120px; }
+        section h2 { color: var(--primary); font-size: 1.8rem; margin-bottom: 1.5rem; padding-bottom: 0.5rem; border-bottom: 3px solid var(--primary); }
+        section h3 { color: var(--secondary); font-size: 1.3rem; margin-top: 1.5rem; margin-bottom: 1rem; }
+        section h4 { color: var(--text); font-size: 1.1rem; margin-top: 1rem; margin-bottom: 0.5rem; font-weight: 600; }
+        p, li { margin-bottom: 0.8rem; font-size: 0.95rem; }
+        ul, ol { margin-left: 1.5rem; }
+        table { width: 100%; border-collapse: collapse; margin: 1rem 0; }
+        thead { background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%); color: white; }
+        th, td { padding: 0.8rem; text-align: left; border-bottom: 1px solid #ddd; font-size: 0.9rem; }
+        tbody tr:hover { background-color: #f5f5f5; }
+        .cards-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; margin: 1.5rem 0; }
+        .card { background: white; border: 2px solid #ddd; border-radius: 10px; padding: 1.5rem; transition: all 0.3s; }
+        .card:hover { border-color: var(--primary); box-shadow: 0 5px 20px rgba(46, 204, 113, 0.2); transform: translateY(-5px); }
+        .card h4 { color: var(--primary); margin-bottom: 0.5rem; font-size: 1rem; }
+        .card p { font-size: 0.9rem; margin-bottom: 0.5rem; }
+        pre { background: #2c3e50; color: #ecf0f1; padding: 1.5rem; border-radius: 8px; overflow-x: auto; margin: 1rem 0; border-left: 4px solid var(--primary); font-size: 0.85rem; }
+        code { font-family: 'Courier New', monospace; }
+        .alert { padding: 1rem; border-radius: 5px; margin: 1rem 0; border-left: 4px solid; font-size: 0.95rem; }
+        .alert-info { background-color: #d1ecf1; border-color: #0c5460; color: #0c5460; }
+        .alert-warning { background-color: #fff3cd; border-color: #856404; color: #856404; }
+        .alert-danger { background-color: #f8d7da; border-color: #721c24; color: #721c24; }
+        .alert-success { background-color: #d4edda; border-color: #155724; color: #155724; }
+        .schema-box { background: #f8f9fa; border: 2px solid var(--primary); border-radius: 8px; padding: 1.5rem; margin: 1.5rem 0; font-family: monospace; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word; font-size: 0.85rem; }
+        .spec-list { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1rem; margin: 1rem 0; }
+        .spec-item { background: var(--light); padding: 1rem; border-radius: 5px; border-left: 4px solid var(--primary); font-size: 0.9rem; }
+        .spec-item strong { color: var(--primary); }
+        .box-highlight { background: linear-gradient(135deg, rgba(46, 204, 113, 0.1) 0%, rgba(52, 152, 219, 0.1) 100%); border: 2px solid var(--primary); border-radius: 8px; padding: 1.5rem; margin: 1.5rem 0; }
+        .timeline { position: relative; padding: 2rem 0; }
+        .timeline-item { padding-left: 3rem; position: relative; margin-bottom: 2rem; }
+        .timeline-item::before { content: ''; position: absolute; left: 0; top: 0; width: 20px; height: 20px; background: var(--primary); border-radius: 50%; border: 3px solid white; box-shadow: 0 0 0 3px var(--primary); }
+        .timeline-item::after { content: ''; position: absolute; left: 8px; top: 20px; width: 2px; height: calc(100% + 20px); background: var(--primary); }
+        .timeline-item:last-child::after { display: none; }
+        footer { background: var(--dark); color: white; text-align: center; padding: 2rem; margin-top: 3rem; }
+        footer a { color: var(--primary); text-decoration: none; }
+        @media (max-width: 968px) { .main-content { grid-template-columns: 1fr; } .sidebar { position: static; } }
+        @media (max-width: 768px) { .header-content { justify-content: center; } section h2 { font-size: 1.5rem; } .cards-grid { grid-template-columns: 1fr; } }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <div class="logo">🚴 Home Trainer - Wiki Complète</div>
+            <div class="page-tabs">
+                <button class="page-tab active" onclick="switchPage('page1')">📋 Projets & Technique</button>
+                <button class="page-tab" onclick="switchPage('page2')">🔗 Intégration & Amélioration</button>
+                <button class="page-tab" onclick="switchPage('page3')">⚖️ Critique & Solutions</button>
+            </div>
+        </div>
+    </header>
+
+    <!-- PAGE 1: PROJETS & TECHNIQUE -->
+    <div id="page1" class="page active">
+        <div class="container">
+            <section class="intro-section">
+                <h1>🎯 Home Trainer - Système de Monitoring Santé Connecté</h1>
+                <p><strong>Solution de rééducation basée sur un vélo home trainer connecté</strong></p>
+                <p>Ce projet consiste à développer un système complet de surveillance de la santé et du stress intégré à un vélo home trainer. Il collecte des données physiologiques (fréquence cardiaque, saturation en oxygène, stress) et environnementales.</p>
+                <p>Le système s'appuie sur plusieurs capteurs reliés à un <strong>Arduino UNO R4 WiFi</strong>, qui traite les données et les transmet en temps réel via <strong>MQTT</strong> vers des dashboards <strong>Node-RED</strong> interactifs.</p>
+                <div class="intro-image">📊 Architecture complète : Capteurs → Arduino → MQTT → Node-RED → Dashboards</div>
+            </section>
+
+            <div class="main-content">
+                <aside class="sidebar">
+                    <h3>📑 Navigation</h3>
+                    <ul>
+                        <li><a href="#description">Description Projets</a></li>
+                        <li><a href="#projet1">Projet 1 - Stress</a></li>
+                        <li><a href="#projet2">Projet 2 - Santé</a></li>
+                        <li><a href="#requirements">Prérequis</a></li>
+                        <li><a href="#components">Composants</a></li>
+                        <li><a href="#wiring">Câblage</a></li>
+                        <li><a href="#code">Code Arduino</a></li>
+                        <li><a href="#nodered">Node-RED</a></li>
+                        <li><a href="#mqtt">MQTT</a></li>
+                        <li><a href="#troubleshooting">Troubleshooting</a></li>
+                    </ul>
+                </aside>
+
+                <div class="content">
+                    <section id="description">
+                        <h2>📋 Description des deux projets</h2>
+                        <p>Dans le cadre du projet Home Trainer, <strong>deux sous-projets complémentaires</strong> ont été développés. Chacun repose sur un Arduino UNO R4 WiFi, un ensemble de capteurs spécifiques et un dashboard Node-RED dédié.</p>
+                       
+                        <h3>Approche modulaire</h3>
+                        <p>Cette approche facilite :</p>
+                        <ul>
+                            <li>La compréhension du système</li>
+                            <li>Son évolution future</li>
+                            <li>Son intégration dans l'écosystème Home Trainer</li>
+                        </ul>
+
+                        <div class="cards-grid">
+                            <div class="card">
+                                <h4>📈 Projet 1 - Stress & Environnement</h4>
+                                <p><strong>Capteurs :</strong> GSR, CCS811, MPU6050</p>
+                                <p><strong>Focus :</strong> Analyse du stress et conditions environnementales</p>
+                                <p><strong>Dashboard :</strong> Visualisation complète avec alertes</p>
+                            </div>
+                            <div class="card">
+                                <h4>❤️ Projet 2 - Santé Physiologique</h4>
+                                <p><strong>Capteurs :</strong> SpO₂/BPM, PIR, Température</p>
+                                <p><strong>Focus :</strong> Suivi de l'état de santé pendant l'effort</p>
+                                <p><strong>Dashboard :</strong> Monitoring médical simplifié</p>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section id="projet1">
+                        <h2>📈 Projet 1 - Surveillance du Stress & Environnement</h2>
+                        <h3>Objectifs</h3>
+                        <p>Analyser le niveau de stress de l'utilisateur ainsi que les conditions environnementales pendant l'entraînement ou la rééducation. Ces paramètres influencent directement le confort, la sécurité et la qualité de l'effort.</p>
+
+                        <h3>Capteurs et données analysées</h3>
+                        <div class="spec-list">
+                            <div class="spec-item">
+                                <strong>🖐️ Capteur GSR</strong><br>
+                                Estimation du stress via réponse galvanique de la peau
+                            </div>
+                            <div class="spec-item">
+                                <strong>💨 Qualité de l'air (CCS811)</strong><br>
+                                Mesure CO₂ (ppm) et TVOC (ppb)
+                            </div>
+                            <div class="spec-item">
+                                <strong>📊 Mouvement (MPU6050)</strong><br>
+                                Détection des mouvements et agitation
+                            </div>
+                        </div>
+
+                        <h3>Zones de stress</h3>
+                        <div class="cards-grid">
+                            <div class="card">
+                                <h4>🟢 Zone Verte</h4>
+                                <p><strong>État :</strong> Calme</p>
+                                <p><strong>Critères :</strong> GSR ≤ 450</p>
+                                <p><strong>Retours :</strong> LED verte, sons calmes</p>
+                            </div>
+                            <div class="card">
+                                <h4>🟡 Zone Jaune</h4>
+                                <p><strong>État :</strong> Stress modéré</p>
+                                <p><strong>Critères :</strong> GSR 450-650</p>
+                                <p><strong>Retours :</strong> LED jaune, sons d'alerte</p>
+                            </div>
+                            <div class="card">
+                                <h4>🔴 Zone Rouge</h4>
+                                <p><strong>État :</strong> Danger potentiel</p>
+                                <p><strong>Critères :</strong> GSR > 650</p>
+                                <p><strong>Retours :</strong> LED rouge, alarme persistante</p>
+                            </div>
+                        </div>
+
+                        <h3>📊 Dashboard 1 - Stress et Environnement</h3>
+                        <p>Visualisation claire et intuitive des données :</p>
+                        <ul>
+                            <li>Jauge et graphique temporel du GSR</li>
+                            <li>Indicateurs CO₂ et TVOC avec seuils</li>
+                            <li>Graphique de mouvement</li>
+                            <li>Indicateur de zone (SAFE / MEDIUM / DANGER)</li>
+                            <li>Profil utilisateur et actions rapides</li>
+                        </ul>
+                    </section>
+
+                    <section id="projet2">
+                        <h2>❤️ Projet 2 - Suivi de la Santé Physiologique</h2>
+                        <h3>Objectifs</h3>
+                        <p>Dédié au suivi de l'état de santé pendant l'effort ou la rééducation. Permet de surveiller des paramètres physiologiques essentiels pour garantir une pratique sécurisée.</p>
+
+                        <h3>Capteurs et données analysées</h3>
+                        <div class="spec-list">
+                            <div class="spec-item">
+                                <strong>❤️ SpO₂ et Fréquence Cardiaque</strong><br>
+                                Saturation en oxygène et rythme cardiaque
+                            </div>
+                            <div class="spec-item">
+                                <strong>🌡️ Température</strong><br>
+                                Estimation de la température corporelle
+                            </div>
+                            <div class="spec-item">
+                                <strong>🚶 Capteur PIR</strong><br>
+                                Détection de présence et mouvement
+                            </div>
+                        </div>
+
+                        <h3>États généraux</h3>
+                        <div class="cards-grid">
+                            <div class="card">
+                                <h4>🟢 Normal</h4>
+                                <p>Valeurs physiologiques dans les normes</p>
+                            </div>
+                            <div class="card">
+                                <h4>🟡 Mouvement Détecté</h4>
+                                <p>Activité physique ou agitation détectée</p>
+                            </div>
+                            <div class="card">
+                                <h4>🔴 Danger</h4>
+                                <p>Valeurs hors seuils de sécurité</p>
+                            </div>
+                        </div>
+
+                        <h3>❤️ Dashboard 2 - Santé</h3>
+                        <p>Monitoring médical simplifié en temps réel :</p>
+                        <ul>
+                            <li>Jauge SpO₂ (%) avec seuils de sécurité</li>
+                            <li>Jauge du rythme cardiaque (BPM)</li>
+                            <li>Jauge de température corporelle</li>
+                            <li>Indicateur de mouvement</li>
+                            <li>État général synthétique</li>
+                            <li>Visualisation du stress global</li>
+                        </ul>
+                    </section>
+
+                    <section id="requirements">
+                        <h2>✅ Prérequis</h2>
+                        <h3>Logiciels</h3>
+                        <div class="spec-list">
+                            <div class="spec-item">
+                                <strong>PlatformIO</strong><br>
+                                Environnement de développement Arduino
+                            </div>
+                            <div class="spec-item">
+                                <strong>Node-RED</strong><br>
+                                Plateforme d'automatisation par flux
+                            </div>
+                            <div class="spec-item">
+                                <strong>Broker MQTT</strong><br>
+                                EMQX (broker.emqx.io:1883)
+                            </div>
+                        </div>
+                        <h3>Librairies PlatformIO</h3>
+                        <pre><code>lib_deps =
+  knolleary/PubSubClient@^2.8
+  adafruit/Adafruit CCS811 Library@1.1.0
+  dfrobot/DFRobot_BloodOxygen_S@^1.0.0
+  arduino-libraries/ArduinoMqttClient@^0.1.8</code></pre>
+                    </section>
+
+                    <section id="components">
+                        <h2>🔧 Composants nécessaires</h2>
+                        <h3>Microcontrôleur</h3>
+                        <table>
+                            <thead><tr><th>Référence</th><th>Désignation</th><th>Quantité</th><th>Rôle</th></tr></thead>
+                            <tbody><tr><td><strong>Arduino UNO R4 WiFi</strong></td><td>Microcontrôleur ARM Cortex-M4</td><td>1</td><td>Cœur du système, WiFi intégré</td></tr></tbody>
+                        </table>
+
+                        <h3>Capteurs - Projet 1</h3>
+                        <table>
+                            <thead><tr><th>Capteur</th><th>Interface</th><th>Adresse</th><th>Rôle</th></tr></thead>
+                            <tbody>
+                                <tr><td><strong>Grove GSR</strong></td><td>Analogique</td><td>A0</td><td>Détection stress</td></tr>
+                                <tr><td><strong>Adafruit CCS811</strong></td><td>I2C</td><td>0x5A</td><td>CO₂ & TVOC</td></tr>
+                                <tr><td><strong>InvenSense MPU6050</strong></td><td>I2C</td><td>0x68</td><td>Mouvements</td></tr>
+                            </tbody>
+                        </table>
+
+                        <h3>Capteurs - Projet 2</h3>
+                        <table>
+                            <thead><tr><th>Capteur</th><th>Interface</th><th>Adresse</th><th>Rôle</th></tr></thead>
+                            <tbody>
+                                <tr><td><strong>DFRobot Blood Oxygen S</strong></td><td>I2C</td><td>0x57</td><td>SpO₂ & BPM</td></tr>
+                                <tr><td><strong>HC-SR501</strong></td><td>Digital</td><td>D2</td><td>Mouvement</td></tr>
+                            </tbody>
+                        </table>
+
+                        <h3>Sorties & Actionneurs</h3>
+                        <table>
+                            <thead><tr><th>Composant</th><th>Quantité</th><th>Pin</th><th>Rôle</th></tr></thead>
+                            <tbody>
+                                <tr><td>LED Verte</td><td>1</td><td>D3</td><td>État normal</td></tr>
+                                <tr><td>LED Jaune</td><td>1</td><td>D4</td><td>État vigilance</td></tr>
+                                <tr><td>LED Rouge</td><td>1</td><td>D5</td><td>État danger</td></tr>
+                                <tr><td>Buzzer 5V</td><td>1</td><td>D6</td><td>Alerte sonore</td></tr>
+                            </tbody>
+                        </table>
+
+                        <h3>Électronique basique</h3>
+                        <div class="spec-list">
+                            <div class="spec-item"><strong>Résistances :</strong> 10kΩ (4x), 220Ω (3x), 1kΩ (2x)</div>
+                            <div class="spec-item"><strong>Condensateurs :</strong> 100nF (4x), 10µF (2x)</div>
+                            <div class="spec-item"><strong>Infrastructure :</strong> Breadboards, Câbles Dupont, USB-C</div>
+                        </div>
+                    </section>
+
+                    <section id="wiring">
+                        <h2>⚡ Schémas de câblage</h2>
+                        <h3>Pins Connections</h3>
+                        <div class="schema-box">Arduino UNO R4 WiFi
+├── A0 (GSR Sensor)
+├── D2 (PIR Motion)
+├── D3 (LED Green) + 220Ω → GND
+├── D4 (LED Yellow) + 220Ω → GND
+├── D5 (LED Red) + 220Ω → GND
+├── D6 (Buzzer) + 1kΩ → GND
+├── SDA (I2C) → Pull-up 10kΩ
+└── SCL (I2C) → Pull-up 10kΩ</div>
+
+                        <h3>I2C Configuration</h3>
+                        <div class="schema-box">Arduino SDA (Pin 20)
+   ├─ 10kΩ Pull-up vers 5V
+   │
+   ┌─────────────────┐
+   │    I2C Bus      │
+   └────┬────┬────┬─┘
+        ↓    ↓    ↓
+     CCS811 MPU6050 SpO₂
+    (0x5A) (0x68) (0x57)
+
+Arduino SCL (Pin 21) ──┬── (Shared Bus)
+                       ├─ 10kΩ Pull-up vers 5V</div>
+                    </section>
+
+                    <section id="code">
+                        <h2>💻 Code Arduino - Projets 1 & 2</h2>
+                       
+                        <h3>📈 Projet 1 - Stress & Environnement</h3>
+                       
+                        <h4>Section 1 : Lecture GSR</h4>
+                        <pre><code>int gsrValue = analogRead(GSR_PIN); // Pin A0
+// Valeurs: 0-450 (calme) | 450-650 (vigilance) | 650-1023 (danger)</code></pre>
+
+                        <h4>Section 2 : Machine d'états</h4>
+                        <pre><code>int determineZone(int gsrValue) {
+  if (gsrValue <= 450) return 0;      // 🟢 Vert
+  else if (gsrValue <= 650) return 1; // 🟡 Jaune
+  else return 2;                       // 🔴 Rouge
+}</code></pre>
+
+                        <h4>Section 3 : Lecture capteurs I2C</h4>
+                        <pre><code>// CCS811 - Qualité air
+if (ccs.available() && !ccs.readData()) {
+  co2 = ccs.geteCO2();
+  tvoc = ccs.getTVOC();
+}
+
+// MPU6050 - Mouvement
+float readMovement() {
+  Wire.beginTransmission(MPU_ADDR);
+  Wire.write(0x3B);
+  Wire.endTransmission(false);
+  Wire.requestFrom(MPU_ADDR, 6, true);
+  return abs(ax) + abs(ay) + abs(az);
+}</code></pre>
+
+                        <h4>Section 4 : Communication MQTT</h4>
+                        <pre><code>unsigned long lastMQTTSend = 0;
+const unsigned long MQTT_INTERVAL = 1000;
+
+void loop() {
+  if (millis() - lastMQTTSend >= MQTT_INTERVAL) {
+    lastMQTTSend = millis();
+    sendMQTTData();
+  }
+}</code></pre>
+
+                        <h4>Section 5 : Envoi JSON</h4>
+                        <pre><code>String payload = "{";
+payload += "\"gsr\":" + String(gsrValue);
+payload += ",\"movement\":" + String(movement);
+payload += ",\"co2\":" + String(co2);
+payload += ",\"tvoc\":" + String(tvoc);
+payload += ",\"zone\":" + String(zone);
+payload += "}";
+
+mqttClient.beginMessage(mqtt_topic);
+mqttClient.print(payload);
+mqttClient.endMessage();</code></pre>
+
+                        <h3>❤️ Projet 2 - Santé Physiologique</h3>
+
+                        <h4>Section 1 : Lecture SpO₂ & BPM</h4>
+                        <pre><code>spo2.getHeartbeatSPO2();
+int o2 = spo2._sHeartbeatSPO2.SPO2;        // Saturation oxygène (%)
+int bpm = spo2._sHeartbeatSPO2.Heartbeat;  // Fréquence cardiaque</code></pre>
+
+                        <h4>Section 2 : Lecture Température</h4>
+                        <pre><code>float temp = spo2.getTemperature_C();</code></pre>
+
+                        <h4>Section 3 : Détection Mouvement (PIR)</h4>
+                        <pre><code>int motion = digitalRead(PIR_PIN); // D2</code></pre>
+
+                        <h4>Section 4 : Filtrage des valeurs aberrantes</h4>
+                        <pre><code>// Rejette valeurs hors limites et utilise défaut
+if (o2 < 70 || o2 > 100) o2 = 95;      // Défaut: 95%
+if (bpm < 30 || bpm > 200) bpm = 75;   // Défaut: 75 bpm
+if (temp < 20 || temp > 45) temp = 32.0;</code></pre>
+
+                        <h4>Section 5 : Machine d'états - Zones de santé</h4>
+                        <pre><code>int zone = 0;
+
+if (o2 < 92 || bpm > 150 || bpm < 40) {
+  zone = 2; // 🔴 DANGER
+}
+else if (motion == HIGH) {
+  zone = 1; // 🟡 VIGILANCE
+}
+// else zone = 0 (🟢 NORMAL)</code></pre>
+
+                        <h4>Section 6 : Envoi JSON Santé</h4>
+                        <pre><code>String json = "{";
+json += "\"motion\":" + String(motion);
+json += ",\"spo2\":" + String(o2);
+json += ",\"bpm\":" + String(bpm);
+json += ",\"temp\":" + String(temp, 2);
+json += ",\"zone\":" + String(zone);
+json += "}";
+
+client.publish(topic, json.c_str());</code></pre>
+                    </section>
+
+                    <section id="nodered">
+                        <h2>📱 Node-RED Dashboards</h2>
+                        <h3>Architecture Flux - Projet 1</h3>
+                        <div class="schema-box">MQTT Input (homeTrainerCastres/Group2-B/MAC)
+    ↓
+JSON Parser
+    ├→ Extract GSR → Gauge + Chart
+    ├→ Extract Movement → Chart
+    ├→ Extract CO2 → Gauge + Chart
+    ├→ Extract TVOC → Gauge
+    └→ Extract Zone → LEDs + Alerts + Sound</div>
+
+                        <h3>Architecture Flux - Projet 2</h3>
+                        <div class="schema-box">MQTT Input (homeTrainerCastres/Group2-B/HEALTH2)
+    ↓
+JSON Parser
+    ├→ Extract Motion → Detection Badge
+    ├→ Extract SpO₂ → Gauge
+    ├→ Extract BPM → Gauge
+    ├→ Extract Temp → Gauge
+    └→ Extract Zone → Status Badge</div>
+
+                        <h3>📊 Dashboard 1 - Éléments affichés</h3>
+                        <div class="spec-list">
+                            <div class="spec-item"><strong>📊 Jauge GSR</strong><br>0-1023 avec zones colorées</div>
+                            <div class="spec-item"><strong>📈 Graphiques</strong><br>Tendances GSR, CO₂, TVOC, Mouvement</div>
+                            <div class="spec-item"><strong>🚨 Alertes</strong><br>Zone DANGER + Sons + Pop-ups</div>
+                            <div class="spec-item"><strong>🎨 Thème</strong><br>Mode sombre/clair</div>
+                        </div>
+
+                        <h3>❤️ Dashboard 2 - Éléments affichés</h3>
+                        <div class="spec-list">
+                            <div class="spec-item"><strong>❤️ Fréquence Cardiaque</strong><br>40-150 BPM</div>
+                            <div class="spec-item"><strong>O₂ Saturation</strong><br>85-100% SpO₂</div>
+                            <div class="spec-item"><strong>🌡️ Température</strong><br>20-45°C</div>
+                            <div class="spec-item"><strong>🚶 Mouvement</strong><br>Détection PIR</div>
+                        </div>
+                    </section>
+
+                    <section id="mqtt">
+                        <h2>📡 Communication MQTT</h2>
+                        <table>
+                            <thead><tr><th>Topic</th><th>Fréquence</th><th>Données</th></tr></thead>
+                            <tbody>
+                                <tr><td><code>homeTrainerCastres/Group2-B/MAC</code></td><td>1x/s</td><td>GSR, CO2, TVOC, mouvement, zone</td></tr>
+                                <tr><td><code>homeTrainerCastres/Group2-B/HEALTH2</code></td><td>1x/s</td><td>SpO₂, BPM, temp, motion, zone</td></tr>
+                            </tbody>
+                        </table>
+
+                        <h3>Payloads JSON</h3>
+                        <h4>Projet 1 (Stress)</h4>
+                        <pre><code>{"gsr":520,"movement":2450,"co2":420,"tvoc":150,"zone":1}</code></pre>
+                       
+                        <h4>Projet 2 (Santé)</h4>
+                        <pre><code>{"motion":0,"spo2":95,"bpm":72,"temp":37.1,"zone":0}</code></pre>
+
+                        <h3>Signification des zones</h3>
+                        <table>
+                            <thead><tr><th>Zone</th><th>Critères</th><th>Actions</th></tr></thead>
+                            <tbody>
+                                <tr><td><strong>🟢 Zone 0</strong></td><td>GSR ≤ 450, SpO₂ ≥ 92%, 40≤BPM≤150</td><td>LED verte, sons calmes</td></tr>
+                                <tr><td><strong>🟡 Zone 1</strong></td><td>GSR 450-650, Mouvement</td><td>LED jaune, alertes</td></tr>
+                                <tr><td><strong>🔴 Zone 2</strong></td><td>GSR > 650, SpO₂ < 92%, BPM anormal</td><td>LED rouge, alarme</td></tr>
+                            </tbody>
+                        </table>
+                    </section>
+
+                    <section id="troubleshooting">
+                        <h2>🔧 Troubleshooting</h2>
+                        <div class="timeline">
+                            <div class="timeline-item">
+                                <h4>❌ Les données MQTT ne sont pas reçues</h4>
+                                <ul>
+                                    <li><strong>Cause :</strong> Arduino non connecté WiFi ou mauvaise configuration</li>
+                                    <li><strong>Solution :</strong> Vérifier Serial Monitor (115200 baud)</li>
+                                    <li><strong>Solution :</strong> Vérifier SSID, password, adresse broker</li>
+                                    <li><strong>Solution :</strong> Vérifier port 1883 accessible</li>
+                                </ul>
+                            </div>
+
+                            <div class="timeline-item">
+                                <h4>❌ CCS811 ne s'initialise pas</h4>
+                                <ul>
+                                    <li><strong>Cause :</strong> Mauvais câblage I2C</li>
+                                    <li><strong>Solution :</strong> Vérifier SDA (pin 20) et SCL (pin 21)</li>
+                                    <li><strong>Solution :</strong> Attendre 15-20s après alimentation</li>
+                                    <li><strong>Solution :</strong> Scanner I2C pour vérifier adresse 0x5A</li>
+                                </ul>
+                            </div>
+
+                            <div class="timeline-item">
+                                <h4>❌ SpO₂ ou BPM aberrant</h4>
+                                <ul>
+                                    <li><strong>Cause :</strong> Mauvais positionnement ou mouvement</li>
+                                    <li><strong>Solution :</strong> Bien presser capteur contre peau</li>
+                                    <li><strong>Solution :</strong> Éviter mouvements brusques</li>
+                                    <li><strong>Solution :</strong> Attendre 5-10s après activation</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="alert alert-info">
+                            <strong>ℹ️ Remarque générale :</strong> Toujours vérifier Serial Monitor en priorité. Tester chaque capteur indépendamment. Vérifier les connexions avant de modifier le code.
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- PAGE 2: INTÉGRATION & AMÉLIORATION -->
+    <div id="page2" class="page">
+        <div class="container">
+            <section class="intro-section">
+                <h1>🔗 Intégration dans Home Trainer & Améliorations Futures</h1>
+                <p>Comment ce système s'intègre dans le projet global, les adaptations nécessaires et les améliorations technologiques envisageables.</p>
+            </section>
+
+            <div class="main-content">
+                <aside class="sidebar">
+                    <h3>📑 Navigation</h3>
+                    <ul>
+                        <li><a href="#integration-role">Rôle Global</a></li>
+                        <li><a href="#integration-data">Données Collectées</a></li>
+                        <li><a href="#adaptations">Adaptations</a></li>
+                        <li><a href="#improvements">Améliorations</a></li>
+                        <li><a href="#architecture">Architecture Modulaire</a></li>
+                        <li><a href="#roadmap">Feuille de route</a></li>
+                    </ul>
+                </aside>
+
+                <div class="content">
+                    <section id="integration-role">
+                        <h2>🔗 Rôle dans l'écosystème Home Trainer</h2>
+                        <p>Notre montage représente une <strong>dimension essentielle</strong>, fournissant une vision complète et multimodale de l'état de l'utilisateur en temps réel.</p>
+
+                        <div class="box-highlight">
+                            <h3>🎯 Objectifs principaux</h3>
+                            <ul>
+                                <li><strong>Suivi physiologique continu :</strong> Fréquence cardiaque, SpO₂, température et stress</li>
+                                <li><strong>Analyse environnementale :</strong> Qualité de l'air, détection de mouvements et contexte</li>
+                                <li><strong>Alertes en temps réel :</strong> Retours visuels et sonores pour prévenir les risques</li>
+                                <li><strong>Feedback utilisateur :</strong> Dashboards interactifs pour l'engagement et la conscience</li>
+                            </ul>
+                        </div>
+                    </section>
+
+                    <section id="integration-data">
+                        <h2>📊 Données collectées et applications</h2>
+                        <table>
+                            <thead><tr><th>Donnée</th><th>Capteur</th><th>Signification</th><th>Application Home Trainer</th></tr></thead>
+                            <tbody>
+                                <tr><td><strong>Stress physiologique</strong></td><td>GSR</td><td>Activation sympathique SNS</td><td>Adapter la difficulté du parcours</td></tr>
+                                <tr><td><strong>Effort cardiaque</strong></td><td>SpO₂ + BPM</td><td>Oxygénation & fréquence</td><td>Moduler résistance du vélo</td></tr>
+                                <tr><td><strong>Posture & Mouvements</strong></td><td>MPU6050 + PIR</td><td>Stabilité ergonomique</td><td>Déclencher rappels posturaux</td></tr>
+                                <tr><td><strong>Qualité de l'air</strong></td><td>CCS811</td><td>Hygiène ambiante</td><td>Afficher indice qualité</td></tr>
+                            </tbody>
+                        </table>
+                    </section>
+
+                    <section id="adaptations">
+                        <h2>⚙️ Adaptations nécessaires pour intégration optimale</h2>
+                        <div class="timeline">
+                            <div class="timeline-item">
+                                <h4>🔄 Synchronisation avec autres modules</h4>
+                                <p>Les données doivent être synchronisées avec le module d'entraînement (résistance, parcours interactifs). Par exemple: élévation GSR → scénario motivant ou réduction de difficulté.</p>
+                            </div>
+
+                            <div class="timeline-item">
+                                <h4>📊 Harmonisation des formats de données</h4>
+                                <p>Standardiser tous les formats JSON et topics MQTT pour intégration fluide. Utiliser un schéma commun: timestamps, IDs utilisateurs, metadata.</p>
+                            </div>
+
+                            <div class="timeline-item">
+                                <h4>🎯 Optimisation de l'ergonomie physique</h4>
+                                <p>Revoir la disposition des capteurs pour garantir confort prolongé. Les capteurs doivent être discrets, stables et non intrusifs.</p>
+                            </div>
+
+                            <div class="timeline-item">
+                                <h4>🔐 Gestion des profils utilisateurs</h4>
+                                <p>Intégrer le monitoring aux profils pour suivi historique, personnalisation des seuils d'alerte et sauvegarde des données de session.</p>
+                            </div>
+
+                            <div class="timeline-item">
+                                <h4>📱 Interface utilisateur unifiée</h4>
+                                <p>Créer une dashboard centralisée affichant monitoring, progression du parcours et scores code de la route.</p>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section id="improvements">
+                        <h2>🚀 Améliorations futures et évolution</h2>
+
+                        <h3 id="architecture">Architecture modulaire proposée</h3>
+                        <p>Scinder le projet en <strong>deux modules distincts</strong> pour améliorer maintenabilité et scalabilité :</p>
+
+                        <div class="cards-grid">
+                            <div class="card">
+                                <h4>📍 Module Environnemental</h4>
+                                <p><strong>Capteurs :</strong> CCS811, MPU6050, PIR</p>
+                                <p><strong>Données :</strong> CO₂, TVOC, mouvements</p>
+                                <p><strong>Objectif :</strong> Analyse contextuelle</p>
+                                <p><strong>Bénéfice :</strong> Adaptable à d'autres projets IoT</p>
+                            </div>
+                            <div class="card">
+                                <h4>❤️ Module Physiologique</h4>
+                                <p><strong>Capteurs :</strong> GSR, SpO₂, BPM, température</p>
+                                <p><strong>Données :</strong> Santé vitale, stress, effort</p>
+                                <p><strong>Objectif :</strong> Suivi médical haute précision</p>
+                                <p><strong>Bénéfice :</strong> Spécialisation pour la santé</p>
+                            </div>
+                        </div>
+
+                        <h3>Améliorations technologiques envisageables</h3>
+                        <div class="spec-list">
+                            <div class="spec-item"><strong>🤖 Machine Learning</strong><br>Algorithmes de classification pour patterns stress et anomalies</div>
+                            <div class="spec-item"><strong>☁️ Cloud & Stockage</strong><br>Architecture cloud (AWS, Azure, Firebase) pour données historiques</div>
+                            <div class="spec-item"><strong>📱 Application Mobile</strong><br>App native pour visualisation remote et notifications push</div>
+                            <div class="spec-item"><strong>🔐 Sécurité & Privacy</strong><br>Chiffrement, authentification multi-factor, conformité RGPD</div>
+                            <div class="spec-item"><strong>⚡ Optimisation Hardware</strong><br>Capteurs plus précis, PCB custom, alimentation optimisée</div>
+                            <div class="spec-item"><strong>🧠 IA Prédictive</strong><br>Prédictions performances et recommandations d'entraînement</div>
+                        </div>
+
+                        <h3 id="roadmap">Feuille de route (Roadmap)</h3>
+                        <div class="box-highlight">
+                            <table>
+                                <thead>
+                                    <tr><th>Phase</th><th>Timeline</th><th>Objectifs</th><th>Livrables</th></tr>
+                                </thead>
+                                <tbody>
+                                    <tr><td><strong>Phase 1</strong></td><td>Aujourd'hui</td><td>Prototype fonctionnel & tests</td><td>Code, Wiki, Dashboards</td></tr>
+                                    <tr><td><strong>Phase 2</strong></td><td>Q1 2025</td><td>Modularisation & séparation</td><td>Modules indépendants</td></tr>
+                                    <tr><td><strong>Phase 3</strong></td><td>Q2 2025</td><td>Intégration Home Trainer</td><td>Système global unifié</td></tr>
+                                    <tr><td><strong>Phase 4</strong></td><td>Q3 2025</td><td>ML & Cloud</td><td>Prédictions & scalabilité</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- PAGE 3: CRITIQUE & SOLUTIONS -->
+    <div id="page3" class="page">
+        <div class="container">
+            <section class="intro-section">
+                <h1>⚖️ Critique du système & Solutions</h1>
+                <p>Analyse honnête des limitations identifiées et recommandations pour les surmonter.</p>
+            </section>
+
+            <div class="main-content">
+                <aside class="sidebar">
+                    <h3>📑 Navigation</h3>
+                    <ul>
+                        <li><a href="#critique">Critique du système</a></li>
+                        <li><a href="#limitations">Limitations principales</a></li>
+                        <li><a href="#challenges">Défis techniques</a></li>
+                        <li><a href="#solutions">Recommandations</a></li>
+                        <li><a href="#learning">Apprentissages clés</a></li>
+                        <li><a href="#conclusion">Conclusion</a></li>
+                    </ul>
+                </aside>
+
+                <div class="content">
+                    <section id="critique">
+                        <h2>⚖️ Critique du système</h2>
+                        <p>Malgré le succès fonctionnel, plusieurs limitations importantes ont été identifiées. Une analyse honnête est essentielle pour guider les améliorations futures.</p>
+
+                        <h3 id="limitations">Limitations principales identifiées</h3>
+
+                        <div class="timeline">
+                            <div class="timeline-item">
+                                <h4>📉 Précision limitée des capteurs</h4>
+                                <p>Les capteurs (notamment GSR) offrent une <strong>précision modérée</strong>. Valeurs affectées par :</p>
+                                <ul>
+                                    <li>L'hydratation de la peau</li>
+                                    <li>Température environnementale</li>
+                                    <li>Variations individuelles</li>
+                                    <li>Usure des capteurs</li>
+                                </ul>
+                                <p><strong>Implication :</strong> Les alertes sont des <em>indicateurs</em>, pas des diagnostiques médicaux.</p>
+                            </div>
+
+                            <div class="timeline-item">
+                                <h4>⚙️ Complexité du code et gestion des ressources</h4>
+                                <p>Utilisation simultanée de 7 capteurs crée :</p>
+                                <ul>
+                                    <li><strong>Conflits de bibliothèques</strong></li>
+                                    <li><strong>Gestion du timing</strong> complexe</li>
+                                    <li><strong>Mémoire limitée</strong> (~6KB RAM)</li>
+                                    <li><strong>Bus I2C congestionné</strong> (4 capteurs)</li>
+                                </ul>
+                                <p><strong>Implication :</strong> Risques d'instabilité, nécessité d'optimisation constante.</p>
+                            </div>
+
+                            <div class="timeline-item">
+                                <h4>🛒 Dépendance du marché des composants</h4>
+                                <p>Le projet est fortement limité par <strong>disponibilité des capteurs</strong> :</p>
+                                <ul>
+                                    <li>Capteurs pertinents n'existent pas</li>
+                                    <li>Capteurs disponibles = chers ou peu fiables</li>
+                                    <li>Changements version = cassent compatibilité</li>
+                                    <li>Délais approvisionnement = affectent timeline</li>
+                                </ul>
+                                <p><strong>Implication :</strong> Limitation par marché, pas seulement idées.</p>
+                            </div>
+
+                            <div class="timeline-item">
+                                <h4>🪡 Ergonomie et positionnement</h4>
+                                <p>Placement capteurs sur le corps pose défis :</p>
+                                <ul>
+                                    <li><strong>SpO₂ :</strong> Attaché doigt = inconfortable</li>
+                                    <li><strong>GSR :</strong> Contact peau = gêne</li>
+                                    <li><strong>MPU6050 :</strong> Difficile stabiliser pendant effort</li>
+                                    <li><strong>PIR :</strong> Couverture limitée</li>
+                                </ul>
+                                <p><strong>Implication :</strong> Peut affecter qualité mesures et confort utilisateur.</p>
+                            </div>
+
+                            <div class="timeline-item">
+                                <h4>🔌 Connectivité et stabilité</h4>
+                                <p>Le système dépend entièrement du WiFi/MQTT :</p>
+                                <ul>
+                                    <li>Déconnexions WiFi intermittentes</li>
+                                    <li>Perte messages MQTT en latence</li>
+                                    <li>Pas sauvegarde locale</li>
+                                    <li>Latence variable selon signal</li>
+                                </ul>
+                                <p><strong>Implication :</strong> Alertes critiques pourraient être manquées.</p>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section id="challenges">
+                        <h2>🎯 Défis techniques majeurs</h2>
+                        <div class="cards-grid">
+                            <div class="card">
+                                <h4>🚨 Calibrage des seuils</h4>
+                                <p>Valeurs (450, 650) définies empiriquement. Chaque individu baseline différente.</p>
+                            </div>
+                            <div class="card">
+                                <h4>⏱️ Fréquence d'acquisition</h4>
+                                <p>Équilibre entre fréquence et consommation énergie/bande passante.</p>
+                            </div>
+                            <div class="card">
+                                <h4>🔋 Consommation énergétique</h4>
+                                <p>Sur batterie, autonomie très limitée (~2-3 heures).</p>
+                            </div>
+                            <div class="card">
+                                <h4>🧉 Variations individuelles</h4>
+                                <p>Données physiologiques varient énormément d'une personne à l'autre.</p>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section id="solutions">
+                        <h2>✅ Solutions et recommandations</h2>
+                        <div class="box-highlight">
+                            <h3>Pour surmonter les limitations :</h3>
+                            <ol>
+                                <li><strong>Calibrage personnalisé :</strong> Phase calibrage par utilisateur pour établir seuils individuels</li>
+                                <li><strong>Filtrage avancé :</strong> Moyennes glissantes et filtres Kalman pour lisser données</li>
+                                <li><strong>Redondance :</strong> Capteurs de secours pour mesures critiques</li>
+                                <li><strong>Stockage local :</strong> Carte SD pour sauvegarde en cas déconnexion</li>
+                                <li><strong>Hardware custom :</strong> PCB spécifique pour optimiser espace et consommation</li>
+                                <li><strong>Capteurs wearable :</strong> Smartwatch, patch si budget permis</li>
+                                <li><strong>Tests médicaux :</strong> Valider contre équipements professionnels</li>
+                            </ol>
+                        </div>
+
+                        <div class="alert alert-warning">
+                            <strong>⚠️ Disclaimer :</strong> Ce système n'est <strong>PAS</strong> un appareil médical certifié. Utilisation informatif et motivationnel uniquement. Jamais comme base de diagnostic ou traitement médical.
+                        </div>
+                    </section>
+
+                    <section id="learning">
+                        <h2>📚 Apprentissages clés du projet</h2>
+                        <p>Malgré les limitations, ce projet a fourni une expérience précieuse :</p>
+                        <div class="spec-list">
+                            <div class="spec-item"><strong>✅ Maîtrise Arduino</strong><br>Programmation temps réel, interrupts, optimisation mémoire</div>
+                            <div class="spec-item"><strong>✅ IoT & Protocoles</strong><br>MQTT, JSON, WiFi, I2C, architecture distribuée</div>
+                            <div class="spec-item"><strong>✅ Capteurs & Mesure</strong><br>Lecture analogique/digitale, filtrage, étalonnage</div>
+                            <div class="spec-item"><strong>✅ Data Visualization</strong><br>Node-RED, dashboards temps réel, alertes interactives</div>
+                            <div class="spec-item"><strong>✅ Debugging</strong><br>Serial monitoring, MQTT Explorer, diagnostic hardware</div>
+                            <div class="spec-item"><strong>✅ Documentation</strong><br>GitHub Wiki, schémas techniques, explicabilité code</div>
+                        </div>
+                    </section>
+
+                    <section id="conclusion">
+                        <h2>🎯 Conclusion</h2>
+                        <p>Ce projet représente une <strong>base solide et fonctionnelle</strong> pour le monitoring santé du Home Trainer. Bien que des limitations existent, elles sont identifiées et documentées.</p>
+
+                        <div class="box-highlight">
+                            <p><strong>✅ Points positifs :</strong> Système modulaire, extensible, bien documenté, basé sur technologies accessibles.</p>
+                            <p><strong>⚠️ Points à améliorer :</strong> Précision capteurs, ergonomie, robustesse connexion, scalabilité.</p>
+                            <p><strong>🚀 Vision :</strong> Évoluer vers système plus professionnel, mieux intégré, potentiellement compatible wearables médicaux.</p>
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p><strong>Home Trainer - Système de Monitoring Santé Connecté</strong></p>
+        <p>Wiki Complète & Professionnelle | Arduino UNO R4 WiFi + MQTT + Node-RED</p>
+        <p style="margin-top: 1rem; color: #bbb;">© 2024 Home Trainer Project</p>
+    </footer>
+
+    <script>
+        function switchPage(pageId) {
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            document.querySelectorAll('.page-tab').forEach(t => t.classList.remove('active'));
+           
+            document.getElementById(pageId).classList.add('active');
+            event.target.classList.add('active');
+           
+            window.scrollTo(0, 0);
+        }
+    </script>
+</body>
+</html>
