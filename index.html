@@ -327,23 +327,11 @@
 ├── D3 (LED Green) + 220Ω → GND
 ├── D4 (LED Yellow) + 220Ω → GND
 ├── D5 (LED Red) + 220Ω → GND
-├── D6 (Buzzer) + 1kΩ → GND
-├── SDA (I2C) → Pull-up 10kΩ
-└── SCL (I2C) → Pull-up 10kΩ</div>
+├── D6 (Buzzer) → GND
+├── SDA (I2C) 
+└── SCL (I2C) </div>
 
-                        <h3>I2C Configuration</h3>
-                        <div class="schema-box">Arduino SDA (Pin 20)
-   ├─ 10kΩ Pull-up vers 5V
-   │
-   ┌─────────────────┐
-   │    I2C Bus      │
-   └────┬────┬────┬─┘
-        ↓    ↓    ↓
-     CCS811 MPU6050 SpO₂
-    (0x5A) (0x68) (0x57)
-
-Arduino SCL (Pin 21) ──┬── (Shared Bus)
-                       ├─ 10kΩ Pull-up vers 5V</div>
+                        
                     </section>
 
                     <section id="code">
